@@ -1,0 +1,61 @@
+{
+  "name": "auction_of_paintings_express_app",
+  "version": "0.0.1",
+  "description": "This module made for study tasks and you are not interesting in it\".",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sunssshine/AuctionExpressApp.git"
+  },
+  "author": "Cyber_Lolya",
+  "license": "ISC",
+  "homepage": "https://github.com/Sunssshine/AuctionExpressApp.git#readme",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "del": "^3.0.0",
+    "express": "^4.16.3",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^3.10.0",
+    "gulp-html-prettify": "0.0.1",
+    "gulp-less": "^4.0.1",
+    "gulp-pug": "^4.0.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-uglify": "^3.0.1",
+    "gulp4": "^4.0.3",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "less-middleware": "^3.0.1",
+    "morgan": "^1.9.1",
+    "prettyjson": "^1.2.1",
+    "pug": "^2.0.3",
+    "rollbar": "^2.5.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "assert": "^1.4.1",
+    "browser-sync": "^2.26.3",
+    "flow": "^0.2.3",
+    "flow-bin": "^0.86.0",
+    "flow-remove-types": "^1.2.3",
+    "gulp-imagemin": "^4.1.0",
+    "mocha": "^5.2.0",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1"
+  },
+  "bugs": {
+    "url": "https://github.com/Sunssshine/AuctionExpressApp/issues"
+  },
+  "scripts": {
+    "build": "flow-remove-types src/ -d routes/",
+    "prepublish": "npm run build",
+    "flow": "flow",
+    "test": "mocha"
+  },
+  "keywords": [
+    "hello"
+  ]
+}

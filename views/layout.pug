@@ -1,0 +1,37 @@
+doctype html
+html
+  head
+    title= title
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+    script(src='http://localhost:1337/socket.io/socket.io.js')
+    script(src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js")
+    script.
+        function openLeftMenu()
+        {
+            document.getElementById("leftMenu").style.display = "block";
+            document.getElementById("myOverlay").style.display = "block";
+        }
+        function closeLeftMenu()
+        {
+            document.getElementById("leftMenu").style.display = "none";
+            document.getElementById("myOverlay").style.display = "none";
+        }
+
+    link(rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css")
+    link(rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css")
+    link(rel='stylesheet', href='/stylesheets/style.min.css')
+    link(href="https://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
+
+
+
+  body
+    div.w3-sidebar.w3-bar-block.w3-card.w3-animate-left.w3-large(style='display:none; width:30%; z-index:4' id='leftMenu')
+      button.w3-bar-item.w3-button.w3-xxlarge.w3-red(onclick='closeLeftMenu()') Закрыть &times;
+      a.w3-bar-item.w3-button.w3-xlarge(href='/members') Участники аукциона
+      a.w3-bar-item.w3-button.w3-xlarge(href='/settings') Настройки аукциона
+      a.w3-bar-item.w3-button.w3-xlarge(href='/') Список картин
+    div.w3-overlay(onclick='closeLeftMenu()' style='cursor:pointer' id='myOverlay')
+    div.w3-teal.w3-container
+      button.w3-button.w3-teal.w3-xxxlarge.w3-left(onclick='openLeftMenu()') &#9776
+      h1(style='margin-left:5%') Аукцион картин
+    block content

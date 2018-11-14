@@ -1,0 +1,54 @@
+extends layout
+
+block content
+
+    button.w3-blue(id='getIt') I'M IN
+    span.w3-red Hello World
+    div.w3-container(id='trade_log')
+    input(id='name')
+    button(id='login' onclick='chat(this)') Enter
+    input(id='msg' type='number')
+    button(id='send' disabled onclick="send(msg.value)") Send
+    button(onclick="clearLog();") Clear
+    div(id='dialog' style='max-height: 300px; width: 300px;' title='Auction Log')
+        .w3-container.w3-card.w3-red
+            .w3-block(id='auctionState') Следующий аукцион начнётся: #{new Date(nextAuctionDate).toLocaleString()}
+        ul(id='dialog_log')
+    script.
+        var socket;
+        function clearLog()
+        {
+            dialog_log.removeChild(dialog_log.firstChild)
+        }
+
+        function chat(event)
+        {
+            const nick = document.getElementById("name").value;
+            socket = io.connect("http://localhost:1337");
+            socket.on("connect", () => {
+                socket.json.emit("hello", {"name": nick});
+            });
+            socket.on("msg", (value) => {
+                addUL(value.message);
+            });
+            login.disabled = true;
+            document.getElementById("send").removeAttribute('disabled');
+        }
+        function send(value)
+        {
+            if (socket)
+                socket.json.emit("bid", value);
+        }
+        function addUL(text)
+        {
+            let li = document.createElement("li");
+            li.innerHTML = text;
+            dialog_log.appendChild(li);
+            if(dialog_log.childNodes.length > 200)
+                clearLog();
+        }
+
+        $(function ()
+        {
+            $("#dialog").dialog();
+        });

@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  div.w3-display-topmiddle(style="margin-top:24px")
+    table.w3-table-all.w3-hoverable.w3-card-4.w3-centered(style="margin-top:5%")
+      tr.w3-pink
+        th Индекс
+        th Название
+        th Автор
+        th Участие в аукционе
+        th Начальная цена
+      - for(var i = 0; i < pics.length; i++) {
+      - var redirect=`window.location.href='https://localhost/pictures/${pics[i].ind}'`;
+      tr.w3-hover-blue(style='cursor: pointer')
+        td(onclick=redirect)= pics[i].ind + 1
+        td(onclick=redirect)= pics[i].name
+        td(onclick=redirect)= pics[i].author
+        - if (pics[i].inAuct) {
+        td(onclick=redirect) Участвует
+        - } else {
+        td(onclick=redirect) Нет
+        - }
+        td(onclick=redirect)= pics[i].startPrice
+      - }

@@ -1,0 +1,62 @@
+extends layout
+
+block content
+    div.w3-centered.w3-card-4(style="margin-top:20px; margin: auto; width: 50%")
+        table(class="w3-table-all w3-hoverable" style="margin-top:20px")
+            thead
+                th.w3-indigo.w3-button.w3-block(colspan='6' onclick="document.getElementById('addmember').style.display='block'") Добавить участника
+            tr.w3-pink
+                th Идентификатор
+                th ФИО
+                th(colspan='4') Счёт
+
+            - for(var i = 0; i < members.length; i++) {
+            tr.w3-hover-blue
+                td= members[i].ind + 1
+                td= members[i].name
+                td= members[i].money
+                td
+                    button.w3-button.w3-green(onclick=`event.preventDefault(); openmoneychanger('${members[i].name}', '${members[i].money}', '${members[i].ind}')` style="cursor: pointer")
+                        i.material-icons edit
+                td
+                    button.w3-button.w3-red(onclick=`deletemember(${members[i].ind})`, style="cursor: pointer")
+                        i.material-icons delete
+                td
+                    button.w3-button.w3-purple(onclick=`window.location.href = window.location.href + '/' + ${members[i].ind}`, style="cursor: pointer")
+                        i.material-icons send
+
+            - }
+
+
+    div#addmember.w3-modal
+        div.w3-modal-content(style="max-width:600px")
+            header.w3-container.w3-indigo.w3-deep-purple
+                span.w3-button.w3-display-topright(onclick="$('#addmember').css('display', 'none')") &times;
+                h2.w3-center Добавление участника
+            div.w3-container
+                div.w3-section
+                    p(style='display:none' id='id')
+                    label
+                        b Участник
+                    input#membername.w3-input.w3-border.w3-margin-bottom(type="text", name="member", required)
+                    label
+                        b Запас денежных средств
+                    input#membermoney.w3-input.w3-border.w3-margin-bottom(type="number", name="money", required)
+                    button#acceptadd.w3-button.w3-block.w3-indigo.w3-section.w3-padding.w3-deep-purple(onclick="addmember();") Добавить
+
+    div#changemoney.w3-modal.w3-display-topright
+        div.w3-modal-content.w3-card-4(style="max-width:600px")
+            header.w3-container.w3-indigo.w3-deep-purple
+                span.w3-button.w3-display-topright(onclick="$('#changemoney').css('display', 'none')") &times;
+                h2.w3-center Изменение счёта
+            div.w3-container
+                div.w3-section
+                    label
+                        b#name
+                    label
+                        b  будет иметь баланс
+                    input#newmoney.w3-input.w3-border.w3-margin-bottom(type="number", name="member", required)
+                    button#acceptchange.w3-button.w3-block.w3-indigo.w3-section.w3-padding.w3-deep-purple(
+                        onclick=`changemoney();`) Изменить
+
+    script(src="/javascripts/members.min.js")

@@ -1,0 +1,155 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('lab3-auction-of-paintings:server');
+//var http = require('http');
+var https = require('https');
+var fs = require('fs');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+//var server = http.createServer(app);
+
+/**
+ * Create HTTPS server.
+ */
+var options = {
+    key: fs.readFileSync('keys/nginx.key'),
+    cert: fs.readFileSync('keys/nginx.crt')
+};
+
+let domain = require("domain");
+
+let d = domain.create();
+var serverS;
+
+d.on("error", (err) => {
+    rollbar.error("Domain has handle an error %s", err);
+});
+
+d.run(()=>
+{
+    serverS = https.createServer(options, app);
+});
+
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+/*
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);*/
+
+serverS.listen(443);
+serverS.on('error', onError);
+serverS.on('listening', onListening);
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      global.rollbar.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = serverS.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+/*Saving before server exit*/
+function writeToFile(filepath, text) {
+    const fs = require("fs");
+    fs.writeFile(filepath, text, (err) => {
+        if (err) throw err;
+        console.log('Auction settings have been saved!');
+    });
+}
+
+//saving our auction in json
+process.on('SIGINT', () => {
+    serverS.close(function () {
+        let paintings = global.paintings;
+        let auctMembers = app.auctMembers;
+        let auctTimeSetts = app.auctTimeSetts;
+
+        let paintingsObj = {};
+        for (let i = 0; i < paintings.length; i++) {
+            let id = paintings[i].ind;
+            delete paintings[i].ind;
+            paintingsObj[id] = paintings[i];
+        }
+
+        let auctMembersObj = {};
+        for (let i = 0; i < auctMembers.length; i++) {
+            let id = auctMembers[i].ind;
+            delete auctMembers[i].ind;
+            auctMembersObj[id] = auctMembers[i];
+        }
+
+        writeToFile('../data/members.json', JSON.stringify(auctMembersObj));
+        writeToFile('../data/picture.json', JSON.stringify(paintingsObj));
+        writeToFile('../data/auction_settings.json', JSON.stringify(auctTimeSetts));
+    });
+});

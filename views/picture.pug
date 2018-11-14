@@ -1,0 +1,103 @@
+extends layout
+
+block content
+    style.
+        .container {
+
+        }
+        .image {
+            opacity: 1;
+            display: block;
+            width: 100%;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
+
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            transform: translate(-0%, -120%);
+
+            text-align: center;
+        }
+
+        .container:hover .image {
+            opacity: 0.3;
+        }
+
+        .container:hover .middle {
+            opacity: 1;
+        }
+
+        .text {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            padding: 16px 32px;
+        }
+    div#inpform.w3-modal
+        div.w3-modal-content.w3-card-4.w3-animate-zoom(style="max-width:600px")
+            header.w3-container.w3-indigo.w3-deep-purple
+                span.w3-button.w3-display-topright(onclick="document.getElementById('inpform').style.display='none'") &times;
+                h2.w3-center Изменение данных картины
+            div.w3-container
+                div.w3-section
+                    label
+                        b Автор
+                    input#newauth.w3-input.w3-border.w3-margin-bottom(type="text", value=author, name="author", required)
+                    label
+                        b Название
+                    input#newname.w3-input.w3-border.w3-margin-bottom(type="text", value=name, name="name", required)
+                    label
+                        b Начальная цена
+                    input#newprice.w3-input.w3-border.w3-margin-bottom(type="number", value=startPrice,
+                         name="startPrice", required)
+                    label
+                        b Минимальный шаг
+                    input#newmins.w3-input.w3-border.w3-margin-bottom(type="number", value=sMin, name="sMin", required)
+                    label
+                        b Максимальный шаг
+                    input#newmaxs.w3-input.w3-border.w3-margin-bottom(type="number", value=sMax, name="sMax", required)
+                    label
+                        b Описание
+                    textarea#newdescr.w3-input.w3-border.w3-margin-bottom(name="description", rows="5",
+                         required)= description
+                    button#changePicInfo.w3-button.w3-block.w3-indigo.w3-section.w3-padding.w3-deep-purple(onclick="changeinfo();") Подтвердить
+
+    div.w3-display-topmiddle(style="margin-top:5%")
+        div.w3-container.w3-cell(style="width:600px;")
+            div#pic.w3-card-4(style="background-color:white")
+                p#picid(hidden)= id
+                - if (!inAuct) {
+                    div.w3-container.w3-center.w3-red
+                        p.shadow-text Не участвует в аукционе
+                - } else {
+                    div.w3-container.w3-center.w3-green
+                        p.shadow-text Участвует в аукционе
+                -}
+                div.w3-container.w3-center.w3-pink
+                    - var nm = author + " - " + name;
+                    p.shadow-text= nm
+                div.container(style='width:600px')
+                    img.image(src=imgPath)
+                    div.middle(style='width:600px')
+                        div.text=description
+                div.w3-bar
+                    div.w3-bar-item.w3-green(style='width:35%')= 'Нач. цена: ' + startPrice
+                    div.w3-bar-item.w3-orange(style='width:30%')= 'Мин. шаг: ' + sMin
+                    div.w3-bar-item.w3-red(style='width:35%')= 'Макс. шаг: ' + sMax
+                div.w3-bar
+                    - if (!inAuct) {
+                        button.w3-button.w3-bar-item.w3-teal(onclick="addauct();" style='width:50%') Выставить на аукцион
+                    - } else {
+                        button.w3-button.w3-bar-item.w3-teal(onclick="removeauct();" style='width:50%') Убрать с аукциона
+                    -}
+                        button.w3-button.w3-bar-item.w3-teal(onclick="document.getElementById('inpform').style.display='block'" style='width:50%') Изменить информацию
+
+
+
+    script(src="/javascripts/picture.min.js")
+
+
+

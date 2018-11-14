@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    .w3-card-4.w3-center.w3-centered(style='width:30%; margin: auto; margin-top: 20px')
+        .w3-block.w3-container
+            h3 Дата и время
+            input#DateTime(type="datetime-local", class="w3-input", value=setts.DateTime, required)
+        .w3-block.w3-container
+            h3 Таймаут продажи (мин)
+            input#timeout.w3-input.slider(type="range", min="1", max="5", value=setts.timeout, required)
+            span#timeout-output= setts.timeout
+        .w3-block.w3-container
+            h3 Время до окончания торга (мин)
+            input#allTime.w3-input.slider(type="range", min="40", max="120", value=setts.allTime, required)
+            span#allTime-output= setts.allTime
+        .w3-block.w3-container
+            h3 Время на изучение информации (мин)
+            input#researchPause.w3-input.slider(type="range", min="5", max="20", value=setts.researchPause, required)
+            span#researchPause-output= setts.researchPause
+        button.w3-button.w3-block.w3-deep-purple(onclick="showAlert()") Сохранить изменения
+        div.w3-panel.w3-green.w3-card-4(style='display:none' id='alert')
+            p Изменения успешно сохранены
+
+
+    script(src="/javascripts/auct_setts.min.js")
